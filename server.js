@@ -30,10 +30,13 @@ Responde ÚNICAMENTE con un array JSON válido, sin texto adicional, sin markdow
 Donde x,y son la esquina superior izquierda del cuadro delimitador en PORCENTAJE del ancho/alto de la imagen (0-100), w,h son ancho y alto en porcentaje, y confidence es un entero 0-100. Si no detectas ningún residuo claro, responde con un array vacío [].`;
 
     const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': process.env.GEMINI_API_KEY
+        },
         body: JSON.stringify({
           contents: [
             {
