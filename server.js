@@ -18,8 +18,8 @@ app.post('/api/scan', async (req, res) => {
       return res.status(400).json({ error: 'Falta la imagen a analizar.' });
     }
 
-    if (!process.env.ANTHROPIC_API_KEY) {
-      return res.status(500).json({ error: 'El servidor no tiene configurada la variable de entorno ANTHROPIC_API_KEY.' });
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'El servidor no tiene configurada la variable de entorno GEMINI_API_KEY.' });
     }
 
     const systemPrompt = `Eres un sistema de visión por computadora especializado en detección de residuos. Analiza la imagen y detecta TODOS los objetos de residuos visibles. Para cada objeto detectado, clasifícalo en EXACTAMENTE una de estas categorías: ${WASTE_CLASSES.join(', ')}.
@@ -29,39 +29,33 @@ Responde ÚNICAMENTE con un array JSON válido, sin texto adicional, sin markdow
 
 Donde x,y son la esquina superior izquierda del cuadro delimitador en PORCENTAJE del ancho/alto de la imagen (0-100), w,h son ancho y alto en porcentaje, y confidence es un entero 0-100. Si no detectas ningún residuo claro, responde con un array vacío [].`;
 
-    const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
-              { type: 'text', text: 'Detecta y clasifica los residuos en esta imagen.' }
-            ]
-          }
-        ]
-      })
-    });
+    const geminiResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: systemPrompt + '\n\nDetecta y clasifica los residuos en esta imagen.' },
+                { inline_data: { mime_type: mediaType, data: base64 } }
+              ]
+            }
+          ]
+        })
+      }
+    );
 
-    const data = await anthropicResponse.json();
+    const data = await geminiResponse.json();
 
-    if (!anthropicResponse.ok) {
-      const message = data?.error?.message || 'Error al llamar a la API de Anthropic.';
-      return res.status(anthropicResponse.status).json({ error: message });
+    if (!geminiResponse.ok) {
+      const message = data?.error?.message || 'Error al llamar a la API de Gemini.';
+      return res.status(geminiResponse.status).json({ error: message });
     }
 
-    const textBlocks = (data.content || [])
-      .filter(block => block.type === 'text')
-      .map(block => block.text)
+    const textBlocks = (data.candidates?.[0]?.content?.parts || [])
+      .map(part => part.text || '')
       .join('\n');
 
     const clean = textBlocks.replace(/```json|```/g, '').trim();
