@@ -222,14 +222,19 @@
     border:1px solid var(--line);
   }
 
-  video, #frame{
+  video{
     width:100%;
     height:100%;
     object-fit:cover;
     display:block;
   }
 
-  #frame{ display:none; }
+  #frame{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:none;
+  }
 
   .placeholder{
     position:absolute; inset:0;
@@ -514,6 +519,7 @@ fileInput.addEventListener('change', async (e)=>{
   reader.onload = async (ev)=>{
     setStatus('Procesando foto...', false);
     const compressed = await compressImageDataUrl(ev.target.result);
+
     frameImg.src = compressed;
     frameImg.style.display = 'block';
     video.style.display = 'none';
@@ -683,7 +689,55 @@ btnAuto.addEventListener('click', ()=>{
   }
 });
 
+// El marco tiene tamaño fijo; si la imagen no coincide en proporción, queda con
+// espacio vacío arriba/abajo o a los lados (letterbox). Esta función calcula el
+// área real donde se dibuja la imagen, para que las cajas de detección (que vienen
+// en % de la imagen) se posicionen correctamente y no floten sobre el espacio vacío.
+function updateBoxesLayerRect(){
+  const stageRect = stage.getBoundingClientRect();
+
+  if(mode === 'photo' && frameImg.naturalWidth && frameImg.naturalHeight){
+    const containerW = stageRect.width;
+    const containerH = stageRect.height;
+    const imageAspect = frameImg.naturalWidth / frameImg.naturalHeight;
+    const containerAspect = containerW / containerH;
+
+    let dispW, dispH, offsetX, offsetY;
+    if(imageAspect > containerAspect){
+      dispW = containerW;
+      dispH = containerW / imageAspect;
+      offsetX = 0;
+      offsetY = (containerH - dispH) / 2;
+    } else {
+      dispH = containerH;
+      dispW = containerH * imageAspect;
+      offsetY = 0;
+      offsetX = (containerW - dispW) / 2;
+    }
+
+    boxesLayer.style.left = offsetX + 'px';
+    boxesLayer.style.top = offsetY + 'px';
+    boxesLayer.style.width = dispW + 'px';
+    boxesLayer.style.height = dispH + 'px';
+    boxesLayer.style.right = 'auto';
+    boxesLayer.style.bottom = 'auto';
+  } else {
+    // Modo cámara: el video llena todo el recuadro (object-fit: cover)
+    boxesLayer.style.left = '0';
+    boxesLayer.style.top = '0';
+    boxesLayer.style.width = '100%';
+    boxesLayer.style.height = '100%';
+    boxesLayer.style.right = 'auto';
+    boxesLayer.style.bottom = 'auto';
+  }
+}
+
+window.addEventListener('resize', ()=>{
+  if(mode) updateBoxesLayerRect();
+});
+
 function renderDetections(detections){
+  updateBoxesLayerRect();
   boxesLayer.innerHTML = '';
   clearMatched();
 
