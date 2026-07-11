@@ -16,6 +16,7 @@
     --mint-dim:#4FAE85;
     --text:#EAF6F0;
     --muted:#8FB3A6;
+
     --c-battery:#FF6B35;
     --c-biological:#E5484D;
     --c-cardboard:#C08552;
@@ -27,7 +28,9 @@
     --c-sanitary:#FF5FA2;
     --c-shoes:#7C8CE0;
   }
+
   *{box-sizing:border-box; margin:0; padding:0;}
+
   body{
     background:
       radial-gradient(circle at 15% 0%, rgba(127,230,185,0.08), transparent 45%),
@@ -38,8 +41,17 @@
     min-height:100vh;
     padding:28px 20px 60px;
   }
-  .app{ max-width:1180px; margin:0 auto; }
-  header.top{ text-align:center; margin-bottom:28px; }
+
+  .app{
+    max-width:1180px;
+    margin:0 auto;
+  }
+
+  header.top{
+    text-align:center;
+    margin-bottom:28px;
+  }
+
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
     font-size:11px;
@@ -48,16 +60,33 @@
     text-transform:uppercase;
     margin-bottom:10px;
   }
+
   h1{
     font-family:'Space Grotesk', sans-serif;
     font-weight:700;
     font-size:clamp(26px, 4vw, 42px);
     letter-spacing:-0.01em;
   }
+
   h1 span{ color:var(--mint); }
-  .subtitle{ color:var(--muted); font-size:14px; margin-top:8px; }
-  .layout{ display:grid; grid-template-columns:220px 1fr; gap:20px; }
-  @media (max-width:820px){ .layout{grid-template-columns:1fr;} }
+
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:8px;
+  }
+
+  .layout{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:20px;
+  }
+
+  @media (max-width:820px){
+    .layout{grid-template-columns:1fr;}
+  }
+
+  /* Sidebar */
   .sidebar{
     background:var(--bg-panel);
     border:1px solid var(--line);
@@ -65,6 +94,7 @@
     padding:18px 14px;
     height:fit-content;
   }
+
   .sidebar-title{
     font-family:'Space Grotesk', sans-serif;
     font-weight:600;
@@ -73,120 +103,262 @@
     padding-bottom:12px;
     border-bottom:1px solid var(--line);
   }
+
   .class-item{
-    display:flex; align-items:center; gap:10px;
-    padding:9px 8px; border-radius:10px;
-    font-size:12.5px; font-weight:500;
-    transition:background .15s ease; cursor:default;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 8px;
+    border-radius:10px;
+    font-size:12.5px;
+    font-weight:500;
+    transition:background .15s ease;
+    cursor:default;
   }
+
   .class-item:hover{ background:var(--bg-panel-2); }
+
   .swatch{
-    width:14px; height:14px; border-radius:4px; flex-shrink:0;
+    width:14px;
+    height:14px;
+    border-radius:4px;
+    flex-shrink:0;
     box-shadow:0 0 0 1px rgba(255,255,255,0.15) inset;
   }
+
   .class-item.matched{
     background:rgba(127,230,185,0.08);
     outline:1px solid rgba(127,230,185,0.35);
   }
+
+  .class-count{
+    margin-left:auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    color:var(--muted);
+  }
+
+  /* Main panel */
   .main{
     background:var(--bg-panel);
     border:1px solid var(--line);
     border-radius:18px;
     padding:18px;
-    display:flex; flex-direction:column; gap:16px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
   }
+
   .stage-header{
-    display:flex; justify-content:space-between; align-items:center;
-    gap:12px; flex-wrap:wrap;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
   }
+
   .status{
-    display:flex; align-items:center; gap:8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
     font-family:'JetBrains Mono', monospace;
-    font-size:12px; color:var(--muted);
+    font-size:12px;
+    color:var(--muted);
   }
-  .dot{ width:8px; height:8px; border-radius:50%; background:var(--muted); }
+
+  .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--muted);
+  }
   .dot.live{ background:var(--mint); box-shadow:0 0 10px var(--mint); animation:pulse 1.4s infinite; }
   @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
   .controls{ display:flex; gap:8px; flex-wrap:wrap; }
+
   button{
     font-family:'Inter', sans-serif;
-    font-weight:600; font-size:13px;
-    padding:10px 16px; border-radius:10px;
+    font-weight:600;
+    font-size:13px;
+    padding:10px 16px;
+    border-radius:10px;
     border:1px solid var(--line);
     background:var(--bg-panel-2);
-    color:var(--text); cursor:pointer;
+    color:var(--text);
+    cursor:pointer;
     transition:all .15s ease;
   }
   button:hover{ border-color:var(--mint-dim); }
   button:disabled{ opacity:.45; cursor:not-allowed; }
-  button.primary{ background:var(--mint); color:#06231B; border-color:var(--mint); }
-  button.primary:hover{ background:#93EFC4; }
-  input[type=file]{ display:none; }
-  .stage{
-    position:relative; width:100%; aspect-ratio:16/10;
-    background:#04100D; border-radius:14px;
-    overflow:hidden; border:1px solid var(--line);
+
+  button.primary{
+    background:var(--mint);
+    color:#06231B;
+    border-color:var(--mint);
   }
-  #frame{ width:100%; height:100%; object-fit:contain; display:none; }
+  button.primary:hover{ background:#93EFC4; }
+
+  button.auto-active{
+    background:rgba(127,230,185,0.15);
+    border-color:var(--mint);
+    color:var(--mint);
+  }
+
+  #autoTimer{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--mint-dim);
+  }
+
+  input[type=file]{ display:none; }
+
+  /* Stage / camera area */
+  .stage{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/10;
+    background:#04100D;
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+
+  video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  #frame{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:none;
+  }
+
   .placeholder{
     position:absolute; inset:0;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:10px; color:var(--muted); font-size:13px;
-    text-align:center; padding:20px;
+    gap:10px;
+    color:var(--muted);
+    font-size:13px;
+    text-align:center;
+    padding:20px;
   }
+
   .placeholder svg{ opacity:.5; }
-  .boxes-layer{ position:absolute; inset:0; pointer-events:none; }
+
+  .boxes-layer{
+    position:absolute; inset:0;
+    pointer-events:none;
+  }
+
   .box{
-    position:absolute; border:2px solid var(--box-color); border-radius:4px;
+    position:absolute;
+    border:2px solid var(--box-color);
+    border-radius:4px;
     box-shadow:0 0 14px color-mix(in srgb, var(--box-color) 55%, transparent);
-    opacity:0; animation:box-in .35s ease forwards;
+    opacity:0;
+    animation:box-in .35s ease forwards;
   }
-  @keyframes box-in{ from{ opacity:0; transform:scale(0.96); } to{ opacity:1; transform:scale(1); } }
+
+  @keyframes box-in{
+    from{ opacity:0; transform:scale(0.96); }
+    to{ opacity:1; transform:scale(1); }
+  }
+
   .box .tag{
-    position:absolute; top:-24px; left:-2px;
-    background:var(--box-color); color:#06110D;
+    position:absolute;
+    top:-24px;
+    left:-2px;
+    background:var(--box-color);
+    color:#06110D;
     font-family:'JetBrains Mono', monospace;
-    font-weight:700; font-size:10.5px;
-    padding:3px 8px; border-radius:4px; white-space:nowrap;
+    font-weight:700;
+    font-size:10.5px;
+    padding:3px 8px;
+    border-radius:4px;
+    white-space:nowrap;
   }
+
+  /* Scanning sweep */
   .scan-sweep{
-    position:absolute; left:0; right:0; height:2px;
+    position:absolute;
+    left:0; right:0;
+    height:2px;
     background:linear-gradient(90deg, transparent, var(--mint), transparent);
     box-shadow:0 0 20px var(--mint);
     animation:sweep 1.6s linear infinite;
     display:none;
   }
   .scan-sweep.active{ display:block; }
-  @keyframes sweep{ 0%{ top:0%; } 100%{ top:100%; } }
+
+  @keyframes sweep{
+    0%{ top:0%; }
+    100%{ top:100%; }
+  }
+
   .scan-grid{
     position:absolute; inset:0;
     background-image:
       linear-gradient(rgba(127,230,185,0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(127,230,185,0.06) 1px, transparent 1px);
     background-size:28px 28px;
-    opacity:0; transition:opacity .3s ease;
+    opacity:0;
+    transition:opacity .3s ease;
   }
   .scan-grid.active{ opacity:1; }
-  .results{ display:flex; flex-wrap:wrap; gap:8px; min-height:38px; }
+
+  /* Results row */
+  .results{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    min-height:38px;
+  }
+
   .result-chip{
-    display:flex; align-items:center; gap:7px;
-    background:var(--bg-panel-2); border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
     border-left:4px solid var(--chip-color);
-    padding:7px 12px; border-radius:9px; font-size:12.5px;
+    padding:7px 12px;
+    border-radius:9px;
+    font-size:12.5px;
   }
+
   .result-chip b{ font-family:'Space Grotesk', sans-serif; }
-  .result-chip .conf{ font-family:'JetBrains Mono', monospace; color:var(--muted); font-size:11px; }
-  .empty-note{ color:var(--muted); font-size:12.5px; font-style:italic; }
-  footer{
-    text-align:center; margin-top:26px;
-    color:var(--muted); font-size:11.5px;
-    font-family:'JetBrains Mono', monospace; letter-spacing:.05em;
+
+  .result-chip .conf{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--muted);
+    font-size:11px;
   }
+
+  .empty-note{
+    color:var(--muted);
+    font-size:12.5px;
+    font-style:italic;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:26px;
+    color:var(--muted);
+    font-size:11.5px;
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:.05em;
+  }
+
   .err{
     background:rgba(229,72,77,0.1);
     border:1px solid var(--c-biological);
-    color:#FFD5D6; padding:10px 14px;
-    border-radius:10px; font-size:12.5px;
+    color:#FFD5D6;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:12.5px;
   }
 </style>
 </head>
@@ -197,7 +369,7 @@
   <header class="top">
     <div class="eyebrow">YOLO11n · 10 categorías</div>
     <h1>Detección de <span>Residuos</span></h1>
-    <div class="subtitle">Modelo YOLO11n entrenado en 10 categorías. Sube una foto y detecta al instante.</div>
+    <div class="subtitle">Modelo YOLO11n entrenado en 10 categorías. Apunta la cámara y detecta en tiempo real.</div>
   </header>
 
   <div class="layout">
@@ -212,22 +384,27 @@
       <div class="stage-header">
         <div class="status">
           <span class="dot" id="statusDot"></span>
-          <span id="statusText">Sin imagen</span>
+          <span id="statusText">Cámara apagada</span>
+          <span id="autoTimer" style="display:none;"></span>
         </div>
         <div class="controls">
-          <label for="fileInput"><button id="btnUploadTrigger" type="button" class="primary" onclick="document.getElementById('fileInput').click()">Subir foto</button></label>
+          <button id="btnCamera">Activar cámara</button>
+          <label for="fileInput"><button id="btnUploadTrigger" type="button" onclick="document.getElementById('fileInput').click()">Subir foto</button></label>
           <input type="file" id="fileInput" accept="image/*">
+          <button id="btnScan" class="primary" disabled>Escanear</button>
+          <button id="btnAuto" disabled>Auto-escaneo: OFF</button>
         </div>
       </div>
 
       <div class="stage" id="stage">
+        <video id="video" autoplay playsinline muted></video>
         <img id="frame" alt="Captura">
         <div class="placeholder" id="placeholder">
           <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
             <circle cx="12" cy="13" r="4"/>
           </svg>
-          <span>Sube una foto para empezar a detectar residuos.</span>
+          <span>Activa la cámara o sube una foto para empezar a escanear residuos.</span>
         </div>
         <div class="scan-grid" id="scanGrid"></div>
         <div class="scan-sweep" id="scanSweep"></div>
@@ -267,6 +444,7 @@ CLASSES.forEach(c=>{
   classList.appendChild(el);
 });
 
+const video = document.getElementById('video');
 const frameImg = document.getElementById('frame');
 const placeholder = document.getElementById('placeholder');
 const stage = document.getElementById('stage');
@@ -275,12 +453,22 @@ const scanSweep = document.getElementById('scanSweep');
 const scanGrid = document.getElementById('scanGrid');
 const statusDot = document.getElementById('statusDot');
 const statusText = document.getElementById('statusText');
+const btnCamera = document.getElementById('btnCamera');
+const btnScan = document.getElementById('btnScan');
+const btnAuto = document.getElementById('btnAuto');
 const fileInput = document.getElementById('fileInput');
 const resultsEl = document.getElementById('results');
+const autoTimerEl = document.getElementById('autoTimer');
 
+let mode = null; // 'camera' | 'photo'
+let stream = null;
 let currentImageDataUrl = null;
 let isScanning = false;
-let hasImage = false;
+
+const AUTO_INTERVAL_SECONDS = 4;
+let autoOn = false;
+let autoCountdown = AUTO_INTERVAL_SECONDS;
+let autoTickHandle = null;
 
 function setStatus(text, live){
   statusText.textContent = text;
@@ -291,9 +479,42 @@ function clearMatched(){
   CLASSES.forEach(c => document.getElementById('class-'+c.key).classList.remove('matched'));
 }
 
+async function startCamera(){
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    video.srcObject = stream;
+    video.style.display = 'block';
+    frameImg.style.display = 'none';
+    placeholder.style.display = 'none';
+    mode = 'camera';
+    btnScan.disabled = false;
+    btnAuto.disabled = false;
+    setStatus('Cámara activa', true);
+  }catch(err){
+    setStatus('No se pudo acceder a la cámara', false);
+    showError('No se pudo acceder a la cámara: ' + err.message + '. Puedes usar "Subir foto" en su lugar.');
+  }
+}
+
+btnCamera.addEventListener('click', ()=>{
+  if(mode === 'camera'){
+    if(stream){ stream.getTracks().forEach(t=>t.stop()); }
+    video.style.display = 'none';
+    placeholder.style.display = 'flex';
+    mode = null;
+    btnScan.disabled = true;
+    btnAuto.disabled = true;
+    stopAutoScan();
+    setStatus('Cámara apagada', false);
+  } else {
+    startCamera();
+  }
+});
+
 fileInput.addEventListener('change', async (e)=>{
   const file = e.target.files[0];
   if(!file) return;
+  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
   const reader = new FileReader();
   reader.onload = async (ev)=>{
     setStatus('Procesando foto...', false);
@@ -301,11 +522,15 @@ fileInput.addEventListener('change', async (e)=>{
 
     frameImg.src = compressed;
     frameImg.style.display = 'block';
+    video.style.display = 'none';
     placeholder.style.display = 'none';
+    mode = 'photo';
     currentImageDataUrl = compressed;
-    hasImage = true;
+    btnScan.disabled = false;
+    btnAuto.disabled = true;
+    stopAutoScan();
+    setStatus('Foto cargada', true);
     clearBoxes();
-    await runScan();
   };
   reader.readAsDataURL(file);
 });
@@ -320,6 +545,7 @@ function showError(msg){
   resultsEl.innerHTML = `<div class="err">${msg}</div>`;
 }
 
+// Reduce el tamaño de la imagen antes de enviarla, para que el análisis sea más rápido.
 function compressImageDataUrl(dataUrl, maxDim = 1024, quality = 0.8){
   return new Promise((resolve, reject)=>{
     const img = new Image();
@@ -342,6 +568,23 @@ function compressImageDataUrl(dataUrl, maxDim = 1024, quality = 0.8){
   });
 }
 
+function captureFrameFromVideo(){
+  const canvas = document.createElement('canvas');
+  const maxDim = 1024;
+  let width = video.videoWidth;
+  let height = video.videoHeight;
+  if(width > maxDim || height > maxDim){
+    const scale = maxDim / Math.max(width, height);
+    width = Math.round(width * scale);
+    height = Math.round(height * scale);
+  }
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, width, height);
+  return canvas.toDataURL('image/jpeg', 0.8);
+}
+
 function colorForKey(key){
   const c = CLASSES.find(c=>c.key===key);
   return c ? c.color : '#7FE6B9';
@@ -352,14 +595,21 @@ function labelForKey(key){
 }
 
 async function runScan(){
-  if(isScanning || !hasImage) return;
+  if(isScanning) return;
   isScanning = true;
   clearBoxes();
+  btnScan.disabled = true;
   scanGrid.classList.add('active');
   scanSweep.classList.add('active');
   setStatus('Escaneando...', true);
 
-  const dataUrl = currentImageDataUrl;
+  let dataUrl;
+  if(mode === 'camera'){
+    dataUrl = captureFrameFromVideo();
+  } else {
+    dataUrl = currentImageDataUrl;
+  }
+
   const base64 = dataUrl.split(',')[1];
   const mediaType = dataUrl.substring(dataUrl.indexOf(':')+1, dataUrl.indexOf(';'));
 
@@ -384,15 +634,69 @@ async function runScan(){
   }finally{
     scanGrid.classList.remove('active');
     scanSweep.classList.remove('active');
+    btnScan.disabled = false;
     isScanning = false;
-    setStatus('Foto cargada', true);
+    if(!autoOn){
+      if(mode === 'camera') setStatus('Cámara activa', true);
+      else setStatus('Foto cargada', true);
+    }
   }
 }
 
+function stopAutoScan(){
+  autoOn = false;
+  autoCountdown = AUTO_INTERVAL_SECONDS;
+  autoTimerEl.style.display = 'none';
+  btnAuto.classList.remove('auto-active');
+  btnAuto.textContent = 'Auto-escaneo: OFF';
+  if(autoTickHandle){
+    clearInterval(autoTickHandle);
+    autoTickHandle = null;
+  }
+}
+
+function startAutoScan(){
+  autoOn = true;
+  autoCountdown = AUTO_INTERVAL_SECONDS;
+  autoTimerEl.style.display = 'inline';
+  btnAuto.classList.add('auto-active');
+  btnAuto.textContent = 'Auto-escaneo: ON';
+
+  autoTickHandle = setInterval(async ()=>{
+    if(mode !== 'camera'){ stopAutoScan(); return; }
+
+    if(isScanning){
+      autoTimerEl.textContent = 'analizando…';
+      return;
+    }
+
+    autoCountdown -= 1;
+    if(autoCountdown <= 0){
+      autoTimerEl.textContent = 'analizando…';
+      await runScan();
+      autoCountdown = AUTO_INTERVAL_SECONDS;
+    } else {
+      autoTimerEl.textContent = 'próximo escaneo en ' + autoCountdown + 's';
+    }
+  }, 1000);
+}
+
+btnAuto.addEventListener('click', ()=>{
+  if(autoOn){
+    stopAutoScan();
+  } else {
+    startAutoScan();
+  }
+});
+
+// El marco tiene tamaño fijo; si la imagen no coincide en proporción, queda con
+// espacio vacío arriba/abajo o a los lados (letterbox). Esta función calcula el
+// área real donde se dibuja la imagen, para que las cajas de detección (que vienen
+// en % de la imagen) se posicionen correctamente y no floten sobre el espacio vacío.
 function updateBoxesLayerRect(){
   const stageRect = stage.getBoundingClientRect();
 
-  if(frameImg.naturalWidth && frameImg.naturalHeight){
+  if(mode === 'photo' && frameImg.naturalWidth && frameImg.naturalHeight){
     const containerW = stageRect.width;
     const containerH = stageRect.height;
     const imageAspect = frameImg.naturalWidth / frameImg.naturalHeight;
@@ -417,11 +721,19 @@ function updateBoxesLayerRect(){
     boxesLayer.style.height = dispH + 'px';
     boxesLayer.style.right = 'auto';
     boxesLayer.style.bottom = 'auto';
+  } else {
+    // Modo cámara: el video llena todo el recuadro (object-fit: cover)
+    boxesLayer.style.left = '0';
+    boxesLayer.style.top = '0';
+    boxesLayer.style.width = '100%';
+    boxesLayer.style.height = '100%';
+    boxesLayer.style.right = 'auto';
+    boxesLayer.style.bottom = 'auto';
   }
 }
 
 window.addEventListener('resize', ()=>{
-  if(hasImage) updateBoxesLayerRect();
+  if(mode) updateBoxesLayerRect();
 });
 
 function renderDetections(detections){
@@ -430,7 +742,7 @@ function renderDetections(detections){
   clearMatched();
 
   if(!detections || detections.length === 0){
-    resultsEl.innerHTML = '<span class="empty-note">No se detectaron residuos reconocibles. Intenta con otra foto o mejor iluminación.</span>';
+    resultsEl.innerHTML = '<span class="empty-note">No se detectaron residuos reconocibles. Intenta acercar el objeto o mejorar la iluminación.</span>';
     return;
   }
 
@@ -441,6 +753,7 @@ function renderDetections(detections){
     const label = labelForKey(d.label);
     const conf = Math.round(d.confidence || 0);
 
+    // box overlay
     const box = document.createElement('div');
     box.className = 'box';
     box.style.setProperty('--box-color', color);
@@ -452,17 +765,22 @@ function renderDetections(detections){
     box.innerHTML = `<span class="tag">${label} ${conf}%</span>`;
     boxesLayer.appendChild(box);
 
+    // result chip
     const chip = document.createElement('div');
     chip.className = 'result-chip';
     chip.style.setProperty('--chip-color', color);
     chip.innerHTML = `<b>${label}</b><span class="conf">${conf}%</span>`;
     resultsEl.appendChild(chip);
 
+    // highlight sidebar
     const sideEl = document.getElementById('class-' + d.label);
     if(sideEl) sideEl.classList.add('matched');
   });
 }
+
+btnScan.addEventListener('click', runScan);
 </script>
 
 </body>
 </html>
+
